@@ -41,7 +41,7 @@ const Navbar = () => {
             </Link>
           ))}
           <a
-            href="#"
+            href="register"
             className="flex px-4 py-2 items-center rounded-2xl cursor pointer bg-blue-500 hover:bg-blue-800 text-white"
           >
             Sign Up
@@ -80,15 +80,15 @@ const Navbar = () => {
                     key={item.name}
                     to={item.to}
                     className="block rounded-lg px-3 py-2 text-base font-semibold leading-7
-                    text-gray-400 hover:text-gray-900 hover:cursor-pointer"
+                    text-gray-400 hover:bg-gray-900 hover:cursor-pointer"
                   >
                     {item.name}
                   </Link>
                 ))}
                 <a
-                  href="/signup"
+                  href="/register"
                   className="block rounded-lg px-3 py-2.5 text-base font-semibold leading-7
-                  text-gray-400 hover:text-gray-900 hover:cursor-pointer"
+                  text-gray-400 hover:text-gray-900 hover:cursor-pointer hover:bg-gray-400"
                 >
                   Sign up
                 </a>

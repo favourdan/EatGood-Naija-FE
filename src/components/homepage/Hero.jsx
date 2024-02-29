@@ -40,7 +40,7 @@ const Hero = () => {
             </p>
           </div>
           <a
-            href="/signup"
+            href="/register"
             className="px-4 py-2 sm:px-8 sm:py-4 justify-center items-center rounded-2xl border border-blue-500
        bg-blue-500 text-white font-inter not-italic font-semibold text-sm sm:text-base
        transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-80 hover:bg-blue-800 duration-300"
