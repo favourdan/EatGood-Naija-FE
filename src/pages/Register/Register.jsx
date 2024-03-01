@@ -9,36 +9,50 @@ import { useNavigate, Link } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { notifyError, notifySuccess, notifyWarning } from '../../notification/Toastify';
 import LoadingSpin from "react-loading-spin";
+import { PiEyeSlash } from "react-icons/pi";
+import { Icon } from '@iconify-icon/react';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 
+
+const defaultRegData = {
+    firstName: '',
+    lastName: '',
+    gender: '',
+    email: '',
+    phoneNumber: '',
+    password: '',
+    
+    firstNameValid: false,
+    lastNameValid: false,
+    emailValid: false,
+    genderValid: false,
+    phoneNumberValid: false,
+    passwordValid: false,
+
+    firstNameEmpty: true,
+    lastNameEmpty: true,
+    emailEmpty: true,
+    phoneNumberEmpty: true,
+    passwordEmpty: true,
+}
 
 const Register = () => {
     const navigate = useNavigate();
-    const [regData, setRegData] = useState({
-        firstName: '',
-        lastName: '',
-        gender: '',
-        email: '',
-        phoneNumber: '',
-        password: '',
-
-        firstNameValid: false,
-        lastNameValid: false,
-        emailValid: false,
-        genderValid: false,
-        phoneNumberValid: false,
-        passwordValid: false,
-
-        firstNameEmpty: true,
-        lastNameEmpty: true,
-        emailEmpty: true,
-        phoneNumberEmpty: true,
-        passwordEmpty: true,
-
-    })
+    const [showPassword , setShowPassword] = useState(false);
+    const [valid , setValid] = useState(true)
+    const [phoneNumber , setPhoneNumber] = useState("")
+    const [regData, setRegData] = useState(defaultRegData)
     const [loading, setLoading] = useState(false)
     const emailvalidation = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/
     const genderOptions = ["FEMALE", "MALE"]
 
+    const validationOfPhoneNumber =(value)=>{
+                if (value.length === 0) return setPhoneNumber({phoneNumber: value, phoneNumberValid: true, phoneNumberEmpty: true })
+                if (value.length > 10) return setPhoneNumber({  phoneNumber: value, phoneNumberValid: true, phoneNumberEmpty: false })
+                return setPhoneNumber({ phoneNumber: value, phoneNumberValid: false, phoneNumberEmpty: false })
+
+    }
     const HandleGenderChange = (e) => {
         const selectedGender = e.target.value;
         setRegData({
@@ -47,10 +61,18 @@ const Register = () => {
             genderValid: selectedGender !== ''
         });
 
+
     };
+     const handleHidePassword =()=>{
+       setShowPassword(!showPassword)
+     }
+     const handleChange =(value)=>{
+        setPhoneNumber(value);
+        setValid(validationOfPhoneNumber(value))
+     }
 
     const handleRegData = (e, validations) => {
-        const value = e.target.value;
+        const value = validations === 'phoneNumber' ? e : e.target.value;
         switch (validations) {
             case "firstName":
                 if (value.length === 0) return setRegData({ ...regData, firstName: value, firstNameValid: true, firstNameEmpty: true })
@@ -90,11 +112,12 @@ const Register = () => {
 
     const handleSubmitData = async (e) => {
         e.preventDefault();
+        console.log("phoneNumber", regData.phoneNumber)
         setLoading(true)
         apiPost("auth/registerCustomer", {
             firstName: regData.firstName,
             lastName: regData.lastName,
-            gender: regData.gender,
+            gender: regData.gender,  
             email: regData.email,
             phoneNumber: regData.phoneNumber,
             password: regData.password
@@ -102,14 +125,7 @@ const Register = () => {
             .then(result => {
                 console.log(result)
                 setLoading(false)
-                setRegData({
-                    firstName: '',
-                    lastName: '',
-                    gender: '',
-                    email: '',
-                    phoneNumber: '',
-                    password: ''
-                })
+                setRegData(defaultRegData)
                 if (result.data.status === 200) {
                     notifySuccess("Registration successful!");
                     setTimeout(() => {
@@ -127,15 +143,8 @@ const Register = () => {
             .catch(err => {
                 console.log(err)
                 setLoading(false)
-                setRegData({
-                    firstName: '',
-                    lastName: '',
-                    gender: '',
-                    email: '',
-                    phoneNumber: '',
-                    password: ''
-                })
-                notifyError("Internal Server Error. Registration Failed!")
+                setRegData(defaultRegData)
+                notifyError("Registration Failed!")
             })
     }
 
@@ -165,7 +174,7 @@ const Register = () => {
                         <div className="input-container">
                             <span className="icon"><IoPersonOutline /></span>
                             <input type="text" name="firstName" value={regData.firstName} onChange={(e) => handleRegData(e, "firstName")} 
-                            placeholder="Success Momodu " />
+                            placeholder="Success" />
                                                 {regData.firstNameValid || (!regData.firstNameEmpty && <p className="register-sentence">Only names above two characters are required</p>)}
 
                         </div>
@@ -174,7 +183,7 @@ const Register = () => {
                         <div className="input-container">
                             <span className="icon"><BiSolidEnvelope /></span>
                             <input type="text" name="lastName" value={regData.lastName} onChange={(e) => handleRegData(e, "lastName")} 
-                           placeholder="SuccessMomodu@gmail.com" />
+                           placeholder="Momodu" />
                            {regData.lastNameValid || (!regData.lastNameEmpty && <p className="register-sentence">Only names above two characters are required</p>)}
                         </div>
                     </label>
@@ -182,23 +191,23 @@ const Register = () => {
                         <div className="input-container">
                             <span className="icon"><IoPersonOutline /></span>
                             <input type="text" name="email" value={regData.email} onChange={(e) => handleRegData(e, "email")}
-                             placeholder="+44 70342467" />
+                             placeholder="SuccessMomodu@gmail.com" />
                         {regData.emailValid || (!regData.emailEmpty && <p className="register-sentence">Email does not match the required format</p>)}
                         </div>
                     </label>
                     <label htmlFor="phoneNumber" className="register-form">Phone number
                         <div className="input-container">
-                            <span className="icon"><RiLockPasswordFill /></span>
-                            <input type="text" name="phoneNumber" value={regData.phoneNumber} onChange={(e) => handleRegData(e, "phoneNumber")} 
-                            placeholder="********* " />
+                            <PhoneInput country="us" name="phoneNumber" value={regData.phoneNumber} onChange={(e) => handleRegData(e, "phoneNumber")} 
+                            placeholder="+44 70342467" inputProps={{required: true}} inputStyle={{ width: '100%' }}   />
                             {regData.phoneNumberValid || (!regData.phoneNumberEmpty && <p className="register-sentence">Input the complete phoneNumber</p>)}
                         </div>
                     </label>
                     <label htmlFor="password" className="register-form">Password
                         <div className="input-container">
                             <span className="icon"><RiLockPasswordFill /></span>
-                            <input type="text" name="password" value={regData.password} onChange={(e) => handleRegData(e, "password")} 
+                            <input type={showPassword ? "text":"password"} name="password" value={regData.password} onChange={(e) => handleRegData(e, "password")} 
                             placeholder="*********" />
+                            <span className='password-btn' onClick={handleHidePassword}><PiEyeSlash /></span>
                             {regData.passwordValid || (!regData.passwordEmpty && <p className="register-sentence">Password length should be greater than seven</p>)}
                         </div>
                     </label>
@@ -216,18 +225,17 @@ const Register = () => {
                                         onChange={HandleGenderChange}
                                     />
                                     <div>{genders}</div>
-
                                 </div>
                             )
                         })}
                     </label>
 
                     <button type="submit" className={allFieldsValid ? "login-button" : "login-button"}>
-                        {loading ? <LoadingSpin size="40px" color="white" numberOfRotationsInAnimation={3} /> : <h4>Sign Up</h4>}
+                        {loading ? <LoadingSpin size="30px" color="white" numberOfRotationsInAnimation={3} /> : <h4>Sign Up</h4>}
                     </button>
                 </form>
                 <div className="sign-in-link">
-                    <p>Already a member ? <Link to="/login">Sign in</Link></p>
+                    <p>Already a member ? <Link to="/login">Sign in here</Link></p>
 
                 </div>
 

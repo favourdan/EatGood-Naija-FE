@@ -14,41 +14,16 @@ const Login = () => {
     const loginData = {
         email: '',
         password: '',
-
-        isEmailValid: false,
-        isPasswordValid: false,
-
-        isEmailEmpty: true,
-        isPasswordEmpty: true
     }
 
     const [login, setLogin] = useState(loginData);
     const [loading , setLoading] = useState(false);
     const navigate = useNavigate();
 
-    const handleLoginChange = (e, valid) => {
-        const value = e.target.value;
-        switch (valid) {
-            case "email":
-                if (value.length === 0) return setLogin({ ...login, email: value, isEmailValid: true, isEmailEmpty: true })
-                if (value.length > 1) return setLogin({ ...login, email: value, isEmailValid: true, isEmailEmpty: false })
-                return setLogin({ ...login, email: value, isEmailValid: false, isEmailEmpty: false })
-
-            case "password":
-                if (value.length === 0) return setLogin({ ...login, password: value, isPasswordValid: true, isEmailEmpty: true })
-                if (value.length > 1) return setLogin({ ...login, password: value, isEmailValid: true, isEmailEmpty: false })
-                return setLogin({ ...login, password: value, isPasswordValid: false, isPasswordEmpty: false })
-            
-            
-                default: return login
-
-        }
-
+    const handleLoginChange = (e) => {
+         setLogin({...login,[e.target.name]:e.target.value})
     }
-    const { email, password, isEmailEmpty, isPasswordEmpty, isEmailValid, isPasswordValid } = login
-
-    const fieldsValidation = isEmailValid && !isEmailEmpty
-        && isPasswordValid && !isPasswordEmpty
+    const { email, password } = login
 
     const handleLoginSubmit = async (e) => {
         e.preventDefault();
@@ -82,7 +57,7 @@ const Login = () => {
                     email: '',
                     password: ''
                 })
-                notifyError("Internal Server Error. Registration Failed!")
+                notifyError("Registration Failed!")
             })
 
     }
@@ -110,8 +85,7 @@ const Login = () => {
                     <label htmlFor="fullName" className="register-form-login">Email
                         <div className="input-container-login">
                             <span className="icon-login"><BiSolidEnvelope /></span>
-                            <input type="text" name="email" value={email} onChange={(e) => handleLoginChange(e, "email")} placeholder="SuccessMomodu@gmail.com" />
-                            { isEmailValid || (!isEmailEmpty && <p className="sentence-registration">Email does not match the required format</p>)}
+                            <input type="text" name="email" value={email} onChange={handleLoginChange} placeholder="SuccessMomodu@gmail.com" />
 
                         </div>
                     </label>
@@ -119,15 +93,14 @@ const Login = () => {
                     <label htmlFor="fullName" className="register-form-login">Password
                         <div className="input-container-login">
                             <span className="icon-login"><RiLockPasswordFill /></span>
-                            <input type="text" name="password" value={password} onChange={(e) => handleLoginChange(e , "password")} placeholder="********* " />
-                            { isPasswordValid || (!isPasswordEmpty && <p className="sentence-registration">Password length should be greater than seven</p>)}
+                            <input type="text" name="password" value={password} onChange={handleLoginChange} placeholder="********* " />
 
                         </div>
                     </label>
 
 
-                    <button type="submit" className={fieldsValidation ? "login-button-login": "login-button-login" }>
-                        {loading ? <LoadingSpin size="40px" color="white" numberOfRotationsInAnimation={3} /> :
+                    <button type="submit" className={"login-button-login" }>
+                        {loading ? <LoadingSpin size="30px" color="white" numberOfRotationsInAnimation={3} /> :
                         <h4>Login</h4>}
                     </button>
                 </form>

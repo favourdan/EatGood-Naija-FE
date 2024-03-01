@@ -131,10 +131,21 @@ form label {
     padding-left: 32px;
     font-size: large;
 }
+.register-form .phone-input  {
+    background-color: #F5F5F5;
+    width: 100%;
+    height: 35px;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    padding-left: 32px;
+    font-size: large;
+}
 
 .register-form .input-container {
     position: relative;
 }
+
+
 
 .register-form .icon {
     position: absolute;
@@ -162,6 +173,7 @@ form label {
     border-radius: 16px;
     border: 2px solid transparent;
     margin-bottom: 20px;
+    cursor: pointer;
 }
 
 .sign-in-link {
@@ -172,25 +184,29 @@ form label {
 
 .sign-in-link a {
     color: #2F80ED;
-    text-decoration: none;
 
 }
-.new{
+
+.new {
     color: #2F80ED;
-    display: flex; 
-    
+    display: flex;
+
 }
 
- .radio-btn-gender{
+.radio-btn-gender {
     margin-bottom: 30px;
     gap: 10px;
+
 }
 
-#radio-btn{
-    display: flex; 
+
+
+
+#radio-btn {
+    display: flex;
     flex-direction: row;
     gap: 10px;
-} 
+}
 
 .check-box {
     display: flex;
@@ -200,14 +216,17 @@ form label {
     gap: 10px;
     margin-top: 10px;
 }
-.register-form .input-valid {
-    border: 1px solid #2F80ED ;
-}
-.register-form .input-error {
-    border: 1px solid red;
+
+.password-btn {
+    position: absolute;
+    right: 10px;
+    top: 30%;
+    font-size: 20px;
+    transform: translateX(-20%);
 
 }
-.register-sentence{
+
+.register-sentence {
     color: red
 }
 
@@ -226,7 +245,7 @@ form label {
         flex-direction: column;
         align-items: center;
         box-sizing: border-box;
-        
+
     }
 
     .register-form {
@@ -234,11 +253,13 @@ form label {
         box-sizing: border-box;
         margin-left: 0;
     }
-    .title{
+
+    .title {
         align-items: center;
         padding: 5px 0 15px 40px;
     }
-    .second-title{
+
+    .second-title {
         align-items: center;
         padding: 5px 0 15px 40px;
     }
@@ -246,18 +267,20 @@ form label {
     .register-form input {
         width: 120%;
         box-sizing: border-box;
-        
+
     }
-    .div-option{
+
+    .div-option {
         display: flex;
         align-items: center;
         justify-content: center;
         color: #98A2B3;
-        margin:  none; 
+        margin: none;
     }
+
     .VI {
         border: 2px solid #EAEBEC;
-        width: 110px; /* Adjust the width of the lines */
+        width: 110px;
         height: 15px;
         border-top: none;
         border-right: none;
@@ -265,16 +288,15 @@ form label {
         margin-left: 10px;
     }
 
-    .login-button{
+    .login-button {
         width: 100%;
         margin: 5px 20px;
     }
+
     .transparent-btn.btn-signup {
         width: 120%;
         padding: 5px 15px;
         margin-bottom: 0;
-        
+
     }
 }
-
-
